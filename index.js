@@ -68,7 +68,7 @@ bot.on("message", async message => {
 		}
 	
 		else if (cmd === 'joke'){
-			switch(joke){
+			switch(args[1]){
 				case "wolf" : 
 					message.channel.send('Where does a werewolf sit?');
 					message.channel.send('Anywhere it wants to!');
