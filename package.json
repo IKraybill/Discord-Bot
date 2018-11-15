@@ -13,4 +13,5 @@
   "author": "Raney Elliott",
   "dependencies": {
     "discord.js": "^11.2.1"
-  },
+  }
+}
