@@ -36,13 +36,13 @@ bot.on("message", async message => {
         args.shift(); // delete the first word from the args
 
         
-        if (cmd === 'hi' || cmd === 'hello') { // the first command [I don't like ping > pong]
+        if (cmd === "hi" || cmd === "hello") { // the first command [I don't like ping > pong]
             message.channel.send(`Hello, ${message.author.toString()}`);
             return; 
         }
 
-        else if (cmd === 'ping') { // ping > pong just in case..
-            return message.channel.send('pong');
+        else if (cmd === "ping") { // ping > pong just in case..
+            return message.channel.send("pong");
         }
 
         // Make sure this command always checks for you. YOU NEVER WANT ANYONE ELSE TO USE THIS COMMAND
@@ -51,48 +51,57 @@ bot.on("message", async message => {
             return evalCmd(message, code);
         }
 
-		else if (cmd === 'help'){
-			message.channel.send('Current known commands: !hi, !hello, !ping, !help, !wumpus.');
-			
+		else if (cmd === "help"){
+			message.channel.send("Current known commands: !hi, !hello, !ping, !help, !wumpus, !joke [type] !joke help for a list of jokes:, !dice.");
 		}
 
-		else if (cmd === 'music'){
-				message.channel.send('Music bot not ready');
-			
+		else if (cmd === "music"){
+				message.channel.send("Music bot not ready");
 		}
 	
-		else if (cmd === 'wumpus'){
-			message.channel.send('We do not talk about that');
-			
-			
+		else if (cmd === "wumpus"){
+			message.channel.send("We do not talk about that");
 		}
 	
-		else if (cmd === 'joke'){
+		else if (cmd === "joke"){
 			switch(args[0]){
 				case "wolf" : 
-					message.channel.send('Where does a werewolf sit?');
-					message.channel.send('Anywhere it wants to!');
+					message.channel.send("Where does a werewolf sit?");
+					message.channel.send("Anywhere it wants to!");
 					break;
 				
 				case "chair" :
-					message.channel.send('What is the favorite fruit of a chair?');
-					message.channel.send('A cherry!');
+					message.channel.send("What is the favorite fruit of a chair?");
+					message.channel.send("A cherry!");
                     break;
-                
+				
+				case "kys" :
+					message.channel.send("Okay here's the joke: ");
+					message.channel.send("Your message.");
+					break;
+
+				case "help":
+					message.channel.send("Joke tags: chair, wolf, kys, bar");
+					break;
+
+				case "bar":
+					message.channel.send("A dyslexic man walks in to a bra.");
+					message.channel.send(":joy:");
+                    break;
+                    
                 default:
                     message.channel.send("I guess the joke's on you")
 			}
-			
-			
-			
 		}
 	
-		else if (cmd == 'reee'){
-			
-			
-			
+		else if (cmd === 'reee'){
 		}
 	
+		else if (cmd === 'dice'){
+			let x = Math.floor(Math.random() * 10000);	
+			message.channel.send("You rolled " + x + "!");
+			
+		}
 	
 		else { // if the command doesn't match anything you can say something or just ignore it
             message.channel.send(`Unknown Command, nigga.`);
