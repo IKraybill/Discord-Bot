@@ -52,45 +52,53 @@ bot.on("message", async message => {
         }
 
 		else if (cmd === 'help'){
-			message.channel.send('Current known commands: !hi, !hello, !ping, !help, !wumpus.');
-			
+			message.channel.send('Current known commands: !hi, !hello, !ping, !help, !wumpus, !joke:type !joke help for a list of jokes:, !dice.');
 		}
 
 		else if (cmd === 'music'){
 				message.channel.send('Music bot not ready');
-			
 		}
 	
 		else if (cmd === 'wumpus'){
 			message.channel.send('We do not talk about that');
-			
-			
 		}
 	
 		else if (cmd === 'joke'){
-			switch(args[1]){
+			switch(args[0]){
 				case "wolf" : 
-					message.channel.send('Where does a werewolf sit?');
-					message.channel.send('Anywhere it wants to!');
+					message.channel.send("Where does a werewolf sit?");
+					message.channel.send("Anywhere it wants to!");
 					break;
 				
 				case "chair" :
-					message.channel.send('What is the favorite fruit of a chair?');
-					message.channel.send('A cherry!');
+					message.channel.send("What is a chair's favorite fruit?");
+					message.channel.send("A cherry!");
 					break;
 				
-			}
-			
-			
-			
+				case "kys" :
+					message.channel.send("Okay here's the joke: ");
+					message.channel.send("Your message.");
+					break;
+
+				case "help":
+					message.channel.send("Joke tags: chair, wolf, kys, bar");
+					break;
+
+				case "bar":
+					message.channel.send("A dyslexic man walks in to a bra.");
+					message.channel.send(":joy:");
+					break;
+					}
 		}
 	
-		else if (cmd == 'reee'){
-			
-			
-			
+		else if (cmd === 'reee'){
 		}
 	
+		else if (cmd === 'dice'){
+			let x = Math.floor(Math.random() * 10000);	
+			message.channel.send("You rolled " + x + "!");
+			
+		}
 	
 		else { // if the command doesn't match anything you can say something or just ignore it
             message.channel.send(`Unknown Command, nigga.`);
