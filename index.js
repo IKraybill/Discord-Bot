@@ -90,11 +90,12 @@ bot.on("message", async message => {
                     break;
                     
                 default:
-                    message.channel.send("I guess the joke's on you")
+                    message.channel.send("I guess the joke's on you");
 			}
 		}
 	
 		else if (cmd === 'reee'){
+            message.channel.send("Imagine my shock");
 		}
 	
 		else if (cmd === 'dice'){
