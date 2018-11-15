@@ -157,66 +157,48 @@ bot.on("message", async message => {
 		}
 
 		else if (cmd === '8ball'){
-			let x = Math.floor(Math.random() * 21);
-			if (x == 1 ){
-				message.channel.send("It is certain." + x);
-			}
-			else if (x == 2){
-				message.channel.send("It is decidedly so.");
-			}
-			else if (x == 3){
-				message.channel.send("Without a doubt.");
-			}
-			else if (x == 4){
-				message.channel.send("Yes-definitely.");
-			}
-			else if (x == 5){
-				message.channel.send("You may rely on it.");
-			}
-			else if (x == 6){
-				message.channel.send("As I see it, yes.");
-			}
-			else if (x == 7){
-				message.channel.send("Most likely.");
-			}
-			else if (x == 8){
-				message.channel.send("Outlook good.");
-			}
-			else if (x == 9){
-				message.channel.send("Yes.");
-			}
-			else if (x == 10){
-				message.channel.send("Signs point to yes.");
-			}
-			else if (x == 11){
-				message.channel.send("Reply hazy, try again.");
-			}
-			else if (x == 12){
-				message.channel.send("Ask again later.");
-			}
-			else if (x == 13){
-				message.channel.send("Better not tell you now.");
-			}
-			else if (x == 14){
-				message.channel.send("Cannot predict now.");
-			}
-			else if (x == 15){
-				message.channel.send("Concentrate and ask again.");
-			}
-			else if (x == 16){
-				message.channel.send("Don't count on it.");
-			}
-			else if (x == 17){
-				message.channel.send("My reply is no.");
-			}
-			else if (x == 18){
-				message.channel.send("My sources say no");
-			}
-			else if (x == 19){
-				message.channel.send("Outlook not so good.");
-			}
-			else if (x == 20){
-				message.channel.send("Very doubtful.");
+            let x = Math.floor(Math.random() * 21);
+            switch(x){
+                case 1: message.channel.send("It is certain." + x);
+                    break;
+                case 2: message.channel.send("It is decidedly so.");
+                    break;
+                case 3: message.channel.send("Without a doubt.");
+                    break;
+                case 4: message.channel.send("Yes-definitely.");
+                    break;
+                case 5: message.channel.send("You may rely on it.");
+                    break;
+                case 6: message.channel.send("As I see it, yes.");
+                    break;
+                case 7: message.channel.send("Most likely.");
+                    break;
+                case 8: message.channel.send("Outlook good.");
+                    break;
+                case 9: message.channel.send("Yes.");
+                    break;
+                case 10: message.channel.send("Signs point to yes.");
+                    break;
+                case 11: message.channel.send("Reply hazy, try again.");
+                    break;
+                case 12: message.channel.send("Ask again later.");
+                    break;
+                case 13: message.channel.send("Better not tell you now.");
+                    break;
+                case 14: message.channel.send("Cannot predict now.");
+                    break;
+                case 15: message.channel.send("Concentrate and ask again.");
+                    break;
+                case 16: message.channel.send("Don't count on it.");
+                    break;
+                case 17: message.channel.send("My reply is no.");
+                    break;
+                case 18: message.channel.send("My sources say no");
+                    break;
+                case 19: message.channel.send("Outlook not so good.");
+                    break;
+                case 20: message.channel.send("Very doubtful.");
+                    break;
 			}
 		
 		}
