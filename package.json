@@ -12,6 +12,8 @@
   ],
   "author": "Ian Kraybill",
   "dependencies": {
-    "discord.js": "^11.2.1"
+    "discord.js": "^11.2.1",
+    "perf_hooks": "0.0.1",
+    "performance": "^1.1.1"
   }
 }
