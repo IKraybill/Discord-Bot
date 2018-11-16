@@ -2,7 +2,27 @@ const config = require('./config.json');
 const jokes = require('./jokes.json');
 const quotes = require('./quotes.json');
 const daniel = require("./daniel.json");
+const eightball = require('./eightball.json');
+const CommandSet = require('./CommandSet');
 const util = require('util');
+
+let jokeFuncs = [];
+
+for (let joke in jokes){
+    if (jokes.hasOwnProperty(joke)) {
+        jokeFuncs.push({name: joke, task: function(message) {
+            let first = jokes[joke][0];
+            let punchline = jokes[joke][1];
+
+            message.channel.send(first);
+            setTimeout(() => {message.channel.send(punchline);}, 2000);
+        }})
+    }
+}
+
+console.log(jokeFuncs);
+
+console.log(CommandSet.toFuncObj(jokeFuncs));
 
 module.exports = {
     hello: function(message) {
@@ -17,7 +37,7 @@ module.exports = {
         message.channel.send("pong");
     },
 
-    eval: function (message) {
+    eval: function (message, args) {
         if (message.author.id === config.owner){
             const code = args.join(" ");
             return evalCmd(message, code);
@@ -28,11 +48,13 @@ module.exports = {
         message.channel.send("We do not talk about that");
     },
 
-    joke: function (message) {
-        let defaultJoke = "Joke machine broke";
-        if (args[0]) tellJoke(args[0], defaultJoke, message);
-        else message.channel.send(defaultJoke);
-    },
+    // joke: function (message, args) {
+    //     let defaultJoke = "Joke machine broke";
+    //     if (args[0]) tellJoke(args[0], defaultJoke, message);
+    //     else message.channel.send(defaultJoke);
+    // },
+
+    //joke: new SubCommandSet()
 
     quote: function (message) {
         message.channel.send(quotes[Math.floor(Math.random() * 2) + 1])
@@ -67,49 +89,8 @@ module.exports = {
     },
 
     eightball: function (message) {
-        let x = Math.floor(Math.random() * 21);
-        switch(x){
-            case 1: message.channel.send("It is certain.");
-                break;
-            case 2: message.channel.send("It is decidedly so.");
-                break;
-            case 3: message.channel.send("Without a doubt.");
-                break;
-            case 4: message.channel.send("Yes-definitely.");
-                break;
-            case 5: message.channel.send("You may rely on it.");
-                break;
-            case 6: message.channel.send("As I see it, yes.");
-                break;
-            case 7: message.channel.send("Most likely.");
-                break;
-            case 8: message.channel.send("Outlook good.");
-                break;
-            case 9: message.channel.send("Yes.");
-                break;
-            case 10: message.channel.send("Signs point to yes.");
-                break;
-            case 11: message.channel.send("Reply hazy, try again.");
-                break;
-            case 12: message.channel.send("Ask again later.");
-                break;
-            case 13: message.channel.send("Better not tell you now.");
-                break;
-            case 14: message.channel.send("Cannot predict now.");
-                break;
-            case 15: message.channel.send("Concentrate and ask again.");
-                break;
-            case 16: message.channel.send("Don't count on it.");
-                break;
-            case 17: message.channel.send("My reply is no.");
-                break;
-            case 18: message.channel.send("My sources say no");
-                break;
-            case 19: message.channel.send("Outlook not so good.");
-                break;
-            case 20: message.channel.send("Very doubtful.");
-                break;
-        }
+        let random = Math.floor(Math.random() * 20);
+        message.channel.send(eightball[random + 1]);
     }
 };
 

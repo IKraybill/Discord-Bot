@@ -8,10 +8,10 @@ const bot = new Discord.Client({
     disableEveryone: true,
     disabledEvents: ['TYPING_START']
 });
-let baseSet = new CommandSet(config.prefix, "Current known commands", commands);
+let baseSet = new CommandSet(config.prefix, "Possible commands", commands);
 
 bot.on("ready", () => {
-    bot.user.setActivity('Despacito 2'); //set a default game
+    bot.user.setActivity(config.prefix + 'help'); //set a default game
     console.log(`Bot is online!\n${bot.users.size} users, in ${bot.guilds.size} servers connected.`);
 
     // let commandNames = Object.keys(commands);
@@ -46,32 +46,21 @@ bot.on("message", async message => {
 
         args.shift(); // delete the first word from the args
 
-        console.log(baseSet.help.text);
-
         let commandKnown = false;
 
-        for (let i = 0; i < baseSet.commands.length; i++){
-            if (cmd === baseSet.commands[i].name) {
-                baseSet.commands[i].task(message);
+
+        for (let i = 0; i < baseSet.commandNames.length; i++){
+            if (cmd === baseSet.commandNames[i]) {
+                baseSet.commandTasks[i](message, args);
                 commandKnown = true;
             }
         }
 
         if (cmd === "help"){
-            message.channel.send(baseSet.help.text);
+            message.channel.send(baseSet.helpText);
         } else if (!commandKnown){
             message.channel.send("Unknown command, nigga");
         }
-        //
-        // else if (cmd === "help"){
-		// 	message.channel.send(commandHelp.text);
-		// }
-		//
-		// else { // if the command doesn't match anything you can say something or just ignore it
-        //     message.channel.send(`Unknown Command, nigga.`);
-        // }
-
-
 	   
     } else if (message.content.indexOf("<@"+bot.user.id) === 0 || message.content.indexOf("<@!"+bot.user.id) === 0) { // Catch @Mentions
 

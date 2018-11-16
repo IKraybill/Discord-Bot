@@ -1,3 +1,6 @@
+/**
+ * @deprecated
+ */
 class Help {
     constructor(intro, base){
         this.text = intro + ":";
