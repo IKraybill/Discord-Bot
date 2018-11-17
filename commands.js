@@ -27,8 +27,9 @@ module.exports = [
         }
     }),
 
-    new Command("wumpus", function (message) {
-        message.channel.send("We do not talk about that");
+    new Command("cute", function (message) {
+        message.channel.send("Very cute!");
+        message.channel.send("Just like Miku");
     }),
 
     new CommandSet("joke", config.prefix + "joke ",
