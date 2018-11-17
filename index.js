@@ -8,18 +8,11 @@ const bot = new Discord.Client({
     disableEveryone: true,
     disabledEvents: ['TYPING_START']
 });
-let baseSet = new CommandSet(config.prefix, "Possible commands", commands);
+let baseSet = new CommandSet("command", config.prefix, "Possible commands", commands);
 
 bot.on("ready", () => {
     bot.user.setActivity(config.prefix + 'help'); //set a default game
     console.log(`Bot is online!\n${bot.users.size} users, in ${bot.guilds.size} servers connected.`);
-
-    // let commandNames = Object.keys(commands);
-    // let commandTasks = Object.values(commands);
-    //
-    // for (let i = 0; i < commandNames.length; i++) {
-    //     baseSet.addEntry(commandNames[i], commandTasks[i]);
-    // }
 });
 
 bot.on("guildCreate", guild => {
@@ -36,31 +29,9 @@ bot.on("message", async message => {
 
     console.log(message.content); // Log chat to console for debugging/testing
     
-    if (message.content.indexOf(config.prefix) === 0) { // Message starts with your prefix
-        
-        let msg = message.content.slice(config.prefix.length); // slice of the prefix on the message
+    if (message.content.indexOf(config.prefix) === 0) {
 
-        let args = msg.split(" "); // break the message into part by spaces
-
-        let cmd = args[0].toLowerCase(); // set the first word as the command in lowercase just in case
-
-        args.shift(); // delete the first word from the args
-
-        let commandKnown = false;
-
-
-        for (let i = 0; i < baseSet.commandNames.length; i++){
-            if (cmd === baseSet.commandNames[i]) {
-                baseSet.commandTasks[i](message, args);
-                commandKnown = true;
-            }
-        }
-
-        if (cmd === "help"){
-            message.channel.send(baseSet.helpText);
-        } else if (!commandKnown){
-            message.channel.send("Unknown command, nigga");
-        }
+        baseSet.parseCommand(message);
 	   
     } else if (message.content.indexOf("<@"+bot.user.id) === 0 || message.content.indexOf("<@!"+bot.user.id) === 0) { // Catch @Mentions
 
