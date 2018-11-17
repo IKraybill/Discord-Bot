@@ -1,34 +1,55 @@
 class CommandSet {
-    constructor(prefix, helpBase, commandList){
+    /**
+     * A governing class for sets of commands, can contain commands and other command sets
+     * @param name: name of the command set
+     * @param prefix: prefix used for help string
+     * @param helpBase: base text displayed with help command
+     * @param commands: array of command objects
+     */
+    constructor(name, prefix, helpBase, commands){
+        this.name = name;
         this.prefix = prefix;
         this.helpText = helpBase + ": ";
-        this.commandNames = Object.keys(commandList);
-        this.commandTasks = Object.values(commandList);
-        for (let name in commandList) {
-            this.helpText += (this.helpText === helpBase + ": " ? " " : ", ") + this.prefix + name;
-        }
-    }
-
-    static toFuncArray(funcObj){
-        // let commandNames = Object.keys(funcObj);
-        // let commandTasks = Object.values(funcObj);
-        let array = [];
-
-        for (let name in funcObj){
-            if (funcObj.hasOwnProperty(name)) {
-                array.push({name: name, task: funcObj[name]})
+        this.commands = commands;
+        for (let i = 0; i < commands.length; i++) {
+            if (commands[i].name !== "help") {
+                this.helpText += (this.helpText === helpBase + ": " ? " " : ", ") + this.prefix + commands[i].name;
             }
         }
-
-        return array;
     }
 
-    static toFuncObj(funcArr){
-        let object = {};
-        for (let i = 0; i < funcArr.length; i++){
-            object = eval("Object.assign({"+funcArr[i].name+": funcArr[i].task}, object)");
+    /**
+     * Parses the given command or command set
+     * @param message: Dicord message object, used for sending messages to the user and for
+     * command arguments, e.g. prefix + joke has one argument for base command set, but none for joke command set
+     */
+    parseCommand(message){
+        let cmd = "";
+        let msg = message.content.slice(this.prefix.length);
+        let args = msg.split(" "); // break the message into part by spaces
+        if (args[0]) {
+            cmd = args[0].toLowerCase();
         }
-        return object;
+        args.shift();
+
+        let isCommand = false;
+        let index = 0;
+        for (let i = 0; i < this.commands.length; i++) {
+            if (this.commands[i].name === cmd) {
+                isCommand = true;
+                index = i;
+            }
+        }
+        if (isCommand){
+            if (this.commands[index].constructor.name === "Command") {
+                this.commands[index].task(message, args, this);
+            } else if (this.commands[index].constructor.name === "CommandSet") {
+                this.commands[index].parseCommand(message);
+            }
+        } else {
+
+            message.channel.send("Unknown "+this.name+", nigga. Try " + this.prefix + "help");
+        }
     }
 }
 
