@@ -55,7 +55,7 @@ class CommandSet {
             }
         }
         else {
-            message.channel.send("Unknown " + this.name + ", silly!. Try " + this.prefix + "help");
+            message.channel.send("Unknown " + this.name + ", silly! Try " + this.prefix + "help");
         }
     }
 }
