@@ -1,4 +1,9 @@
-class Command{
+import {CommandSet} from "./CommandSet";
+import {ICommand} from "./ICommand";
+
+export class Command implements ICommand{
+    name: string;
+
     /**
      * Creates a command that the user can type in
      * @param name: name of the command; is what the user types in
@@ -10,6 +15,8 @@ class Command{
         this.task = task;
     }
 
-}
+    task(message, args: string[], parent: CommandSet){
+        message.channel.send("Error, no task specified");
+    }
 
-module.exports = Command;
+}

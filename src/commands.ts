@@ -1,13 +1,13 @@
-const config = require('./config.json');
-const jokes = require('./jokes.json');
-const quotes = require('./quotes.json');
-const daniel = require("./daniel.json");
-const utility = require("./utility.js");
-const eightball = require('./eightball.json');
-const Command = require('./Command');
-const CommandSet = require('./CommandSet');
+import {CommandSet} from "./CommandSet";
+import * as utility from "./utility";
+import {Command} from "./Command";
+const config = require('../config.json');
+const jokes = require('../data/jokes.json');
+const quotes = require('../data/quotes.json');
+const daniel = require("../data/daniel.json");
+const eightball = require('../data/eightball.json');
 
-module.exports = [
+let commands = [
     new Command("hello", function(message) {
         message.channel.send(`Hello, ${message.author.toString()}`);
     }),
@@ -34,8 +34,22 @@ module.exports = [
 
     new CommandSet("joke", config.prefix + "joke ",
         "Possible jokes",
-        utility.jokeObjToCommandArr(jokes)
+        utility.objToObjArray(jokes)
+            .map(object =>
+                new Command(object.key, function (message) {
+                    let first = object.value[0];
+                    let punchline = object.value[1];
+
+                    message.channel.send(first);
+                    setTimeout(() => {message.channel.send(punchline);}, 2000);
+                }
+            ))
     ),
+
+    // new JokeCommandSet(config.prefix + "joke ",
+    //     "Possible jokes",
+    //     jokes
+    // ),
 
     new Command("quote", function (message) {
         message.channel.send(quotes[Math.floor(Math.random() * 2) + 1])
@@ -56,7 +70,7 @@ module.exports = [
     }),
 
     new Command("daniel", function (message) {
-        let danielVals = Object.values(daniel);
+        let danielVals = Object.keys(daniel).map(key => daniel[key]);
         let random = Math.floor(Math.random() * danielVals.length);
         message.channel.send({files: [danielVals[random]]});
     }),
@@ -74,7 +88,9 @@ module.exports = [
         message.channel.send(eightball[random + 1]);
     }),
 
-    new Command("help", function (message, args, parent) {
-        message.channel.send(parent.helpText);
-    })
+    // new Command("help", function (message, args, parent) {
+    //     message.channel.send(parent.helpText);
+    // })
 ];
+
+export {commands}
