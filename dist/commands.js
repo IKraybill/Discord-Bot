@@ -12,12 +12,6 @@ let commands = [
     new Command_1.Command("hello", function (message) {
         message.channel.send(`Hello, ${message.author.toString()}`);
     }),
-    new Command_1.Command("hi", function (message) {
-        message.channel.send(`Hello, ${message.author.toString()}`);
-    }),
-    new Command_1.Command("ping", function (message) {
-        message.channel.send("pong");
-    }),
     new Command_1.Command("eval", function (message, args) {
         if (message.author.id === config.owner) {
             const code = args.join(" ");
@@ -28,27 +22,16 @@ let commands = [
         message.channel.send("Very cute!");
         message.channel.send("Just like Miku");
     }),
-    new CommandSet_1.CommandSet("joke", config.prefix + "joke ", "Possible jokes", utility.objToObjArray(jokes)
-        .map(object => new Command_1.Command(object.key, function (message) {
+    new CommandSet_1.CommandSet("joke", config.prefix, "Possible jokes", utility.objToObjArray(jokes).map(object => new Command_1.Command(object.key, function (message) {
         let first = object.value[0];
         let punchline = object.value[1];
         message.channel.send(first);
         setTimeout(() => { message.channel.send(punchline); }, 2000);
     }))),
-    // new JokeCommandSet(config.prefix + "joke ",
-    //     "Possible jokes",
-    //     jokes
-    // ),
-    new Command_1.Command("quote", function (message) {
-        message.channel.send(quotes[Math.floor(Math.random() * 2) + 1]);
-    }),
-    new Command_1.Command("reee", function (message) {
-        message.channel.send("Imagine my shock");
-    }),
-    new Command_1.Command("dice", function (message) {
-        let x = Math.floor(Math.random() * 10000);
-        message.channel.send("You rolled " + x + "!");
-    }),
+    new CommandSet_1.CommandSet("quote", config.prefix, "Possible quote authors", utility.objToObjArray(quotes).map(object => new Command_1.Command(object.key, function (message) {
+        let random = Math.floor(Math.random() * object.value.length);
+        message.channel.send('"' + object.value[random] + '"');
+    }))),
     new Command_1.Command("strong", function (message) {
         message.channel.send("What's 1000 minus 7?");
         message.channel.send({ files: ["https://thumbs.gfycat.com/AromaticZigzagHamadryad-size_restricted.gif"] });

@@ -12,14 +12,6 @@ let commands = [
         message.channel.send(`Hello, ${message.author.toString()}`);
     }),
 
-    new Command("hi", function(message){
-        message.channel.send(`Hello, ${message.author.toString()}`);
-    }),
-
-    new Command("ping", function(message) {
-        message.channel.send("pong");
-    }),
-
     new Command("eval", function (message, args) {
         if (message.author.id === config.owner){
             const code = args.join(" ");
@@ -32,37 +24,26 @@ let commands = [
         message.channel.send("Just like Miku");
     }),
 
-    new CommandSet("joke", config.prefix + "joke ",
-        "Possible jokes",
-        utility.objToObjArray(jokes)
-            .map(object =>
-                new Command(object.key, function (message) {
-                    let first = object.value[0];
-                    let punchline = object.value[1];
+    new CommandSet("joke", config.prefix, "Possible jokes",
+        utility.objToObjArray(jokes).map(object =>
+            new Command(object.key, function (message) {
+                let first = object.value[0];
+                let punchline = object.value[1];
 
-                    message.channel.send(first);
-                    setTimeout(() => {message.channel.send(punchline);}, 2000);
-                }
-            ))
+                message.channel.send(first);
+                setTimeout(() => {message.channel.send(punchline);}, 2000);
+            })
+        )
     ),
 
-    // new JokeCommandSet(config.prefix + "joke ",
-    //     "Possible jokes",
-    //     jokes
-    // ),
-
-    new Command("quote", function (message) {
-        message.channel.send(quotes[Math.floor(Math.random() * 2) + 1])
-    }),
-
-    new Command("reee", function (message) {
-        message.channel.send("Imagine my shock");
-    }),
-
-    new Command("dice", function (message) {
-        let x = Math.floor(Math.random() * 10000);
-        message.channel.send("You rolled " + x + "!");
-    }),
+    new CommandSet("quote", config.prefix, "Possible quote authors",
+        utility.objToObjArray(quotes).map(object =>
+            new Command(object.key, function (message) {
+                let random = Math.floor(Math.random() * object.value.length);
+                message.channel.send('"' + object.value[random] + '"');
+            })
+        )
+    ),
 
     new Command("strong", function (message) {
         message.channel.send("What's 1000 minus 7?");
@@ -87,10 +68,6 @@ let commands = [
         let random = Math.floor(Math.random() * 20);
         message.channel.send(eightball[random + 1]);
     }),
-
-    // new Command("help", function (message, args, parent) {
-    //     message.channel.send(parent.helpText);
-    // })
 ];
 
 export {commands}

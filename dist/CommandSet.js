@@ -11,7 +11,12 @@ class CommandSet {
      */
     constructor(name, prefix, helpBase, commands) {
         this.name = name;
-        this.prefix = prefix;
+        if (name === "command") {
+            this.prefix = prefix;
+        }
+        else {
+            this.prefix = prefix + name + " ";
+        }
         this.helpText = helpBase + ": ";
         this.commands = commands;
         for (let i = 0; i < commands.length; i++) {
