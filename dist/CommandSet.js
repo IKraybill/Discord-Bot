@@ -20,8 +20,9 @@ class CommandSet {
         this.helpText = helpBase + ": ";
         this.commands = commands;
         for (let i = 0; i < commands.length; i++) {
-            if (commands[i].name !== "help" && commands[i].name !== "eval") {
-                this.helpText += (this.helpText === helpBase + ": " ? " " : ", ") + this.prefix + commands[i].name;
+            if (commands[i].name !== "eval") {
+                this.helpText += (this.helpText === helpBase + ": " ? " " : ", ") + this.prefix + commands[i].name
+                    + (this.commands[i].constructor.name === CommandSet.name ? " [command]" : "");
             }
         }
         this.commands.push(new Command_1.Command("help", function (message, args, parent) {
