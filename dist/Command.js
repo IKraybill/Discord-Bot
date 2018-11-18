@@ -11,7 +11,6 @@ class Command {
         this.name = name;
         this.task = task;
     }
-
     task(message, args, parent) {
         message.channel.send("Error, no task specified");
     }
