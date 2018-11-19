@@ -35,7 +35,7 @@ let commands = [
         }
         console.log(index + 1);
         message.channel.send('"' + object.value[index] + '"');
-    }))),
+    }, "[number]"))),
     new Command_1.Command("strong", function (message) {
         message.channel.send("What's 1000 minus 7?");
         message.channel.send({ files: ["https://thumbs.gfycat.com/AromaticZigzagHamadryad-size_restricted.gif"] });

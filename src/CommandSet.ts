@@ -6,6 +6,7 @@ export class CommandSet implements ICommand{
     prefix: string;
     helpText: string;
     commands: ICommand[];
+    argHelp = "<command>";
 
     /**
      * A governing class for sets of commands, can contain commands and other command sets
@@ -26,7 +27,7 @@ export class CommandSet implements ICommand{
         for (let i = 0; i < commands.length; i++) {
             if (commands[i].name !== "eval") {
                 this.helpText += (this.helpText === helpBase + ": " ? " " : ", ") + this.prefix + commands[i].name
-                + (this.commands[i].constructor.name === CommandSet.name ? " [command]" : "");
+                + (this.commands[i].argHelp != null ? " " + this.commands[i].argHelp : "");
             }
         }
         this.commands.push(new Command("help", function (message, args, parent) {

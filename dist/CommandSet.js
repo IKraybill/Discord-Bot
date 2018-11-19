@@ -10,6 +10,7 @@ class CommandSet {
      * @param commands: array of command objects
      */
     constructor(name, prefix, helpBase, commands) {
+        this.argHelp = "<command>";
         this.name = name;
         if (name === "command") {
             this.prefix = prefix;
@@ -22,7 +23,7 @@ class CommandSet {
         for (let i = 0; i < commands.length; i++) {
             if (commands[i].name !== "eval") {
                 this.helpText += (this.helpText === helpBase + ": " ? " " : ", ") + this.prefix + commands[i].name
-                    + (this.commands[i].constructor.name === CommandSet.name ? " [command]" : "");
+                    + (this.commands[i].argHelp != null ? " " + this.commands[i].argHelp : "");
             }
         }
         this.commands.push(new Command_1.Command("help", function (message, args, parent) {

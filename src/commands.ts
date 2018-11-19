@@ -45,7 +45,7 @@ let commands = [
                 }
                 console.log(index + 1);
                 message.channel.send('"' + object.value[index] + '"');
-            })
+            }, "[number]")
         )
     ),
 
