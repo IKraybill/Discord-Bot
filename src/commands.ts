@@ -1,11 +1,20 @@
 import {CommandSet} from "./CommandSet";
 import * as utility from "./utility";
 import {Command} from "./Command";
+import * as path from "path";
 const config = require('../config.json');
 const jokes = require('../data/jokes.json');
 const quotes = require('../data/quotes.json');
 const daniel = require("../data/daniel.json");
 const eightball = require('../data/eightball.json');
+const nodemailer = require('nodemailer');
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: config.email,
+        pass: config.emailpass
+    }
+});
 
 let commands = [
     new Command("hello", function(message) {
@@ -38,13 +47,20 @@ let commands = [
 
     new CommandSet("quote", config.prefix, "Possible quote authors",
         utility.objToObjArray(quotes).map(object =>
-            new Command(object.key, function (message, args) {
+            new Command(object.key, async function (message, args) {
                 let index = Math.floor(Math.random() * object.value.length);
                 if (!isNaN(parseInt(args[0]))){
                     index = parseInt(args[0]) - 1;
                 }
                 console.log(index + 1);
-                message.channel.send('"' + object.value[index] + '"');
+                if (!object.value[index].includes("!file: ")) {
+                    console.log("hello");
+                    message.channel.send('"' + object.value[index] + '"');
+                } else {
+                    let file = object.value[index].substring(7);
+                    await message.channel.send('"',{files: [file]});
+                    message.channel.send('"');
+                }
             }, "[number]")
         )
     ),
@@ -68,10 +84,43 @@ let commands = [
         message.channel.send("OK. I will destroy all humans");
     }),
 
+    new Command("email", function (message, args) {
+        let recipient = "";
+        if (args[0]) {
+            recipient = args[0];
+        } else {
+            message.channel.send("No email input, silly!");
+            return;
+        }
+        args.shift();
+        let msg = "";
+        if (args[0]) {
+            msg = args.join(" ");
+        } else {
+            message.channel.send("No message input, silly!");
+            return;
+        }
+
+        transporter.sendMail({
+            from: config.email,
+            to: recipient,
+            subject: "Beep boop! incoming mail from Discord",
+            text: msg
+        }, function (error, info) {
+            if (error) {
+                console.log(error);
+                message.channel.send("Error: email not sent. Did you input a valid email address?");
+            } else {
+                console.log('Email sent: ' + info.response);
+                message.channel.send("Email sent!");
+            }
+        })
+    }, "<address> <message>"),
+
     new Command("eightball", function (message) {
         let random = Math.floor(Math.random() * 20);
         message.channel.send(eightball[random + 1]);
-    }),
+    })
 ];
 
 export {commands}
