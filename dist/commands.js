@@ -28,9 +28,13 @@ let commands = [
         message.channel.send(first);
         setTimeout(() => { message.channel.send(punchline); }, 2000);
     }))),
-    new CommandSet_1.CommandSet("quote", config.prefix, "Possible quote authors", utility.objToObjArray(quotes).map(object => new Command_1.Command(object.key, function (message) {
-        let random = Math.floor(Math.random() * object.value.length);
-        message.channel.send('"' + object.value[random] + '"');
+    new CommandSet_1.CommandSet("quote", config.prefix, "Possible quote authors", utility.objToObjArray(quotes).map(object => new Command_1.Command(object.key, function (message, args) {
+        let index = Math.floor(Math.random() * object.value.length);
+        if (!isNaN(parseInt(args[0]))) {
+            index = parseInt(args[0]) - 1;
+        }
+        console.log(index + 1);
+        message.channel.send('"' + object.value[index] + '"');
     }))),
     new Command_1.Command("strong", function (message) {
         message.channel.send("What's 1000 minus 7?");
