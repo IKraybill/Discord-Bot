@@ -11,12 +11,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const CommandSet_1 = require("./CommandSet");
 const utility = require("./utility");
 const Command_1 = require("./Command");
+const fs = require('fs');
 const config = require('../config.json');
 const jokes = require('../data/jokes.json');
 const quotes = require('../data/quotes.json');
 const daniel = require("../data/daniel.json");
 const eightball = require('../data/eightball.json');
 const nodemailer = require('nodemailer');
+const ytdl = require("ytdl-core");
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -77,6 +79,56 @@ let commands = [
     new Command_1.Command("kill", function (message) {
         message.channel.send("OK. I will destroy all humans");
     }),
+    new Command_1.Command("bitcoin", function (message) {
+        let random = Math.floor(Math.random() * 4);
+        if (random === 1 && message.author.id === config.owner) {
+            message.channel.send("You got bitcoin!");
+        }
+        else {
+            message.channel.send("You didn't get bitcoin! loser");
+        }
+    }),
+    new Command_1.Command("music", function (message, args, parent) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let connection;
+            let dispatcher;
+            if (message.member.voiceChannel) {
+                connection = yield message.member.voiceChannel.join();
+            }
+            else {
+                message.channel.send("Not in a voice channel, silly!");
+            }
+            //console.log(connection);
+            if (args[0]) {
+                if (args[0].startsWith("https://")) {
+                    dispatcher = connection.playStream(ytdl(args[0], { filter: 'audioonly' }));
+                    console.log("playing stream");
+                }
+                else if (args[0].toLowerCase() === "vocaloid") {
+                    let path = "res/music/vocaloid";
+                    let songFile;
+                    fs.readdir(path, function (err, items) {
+                        let fileIndex = Math.floor(Math.random() * items.length);
+                        songFile = items[fileIndex];
+                    });
+                    function waitForSong() {
+                        if (songFile) {
+                            let songPath = path + "/" + songFile;
+                            message.channel.send("Now playing: " + songFile);
+                            dispatcher = connection.playFile(songPath);
+                        }
+                        else {
+                            setTimeout(waitForSong, 1000);
+                        }
+                    }
+                    setTimeout(waitForSong, 1000);
+                }
+            }
+            yield dispatcher.on('finish', () => {
+                console.log('Finished playing!');
+            });
+        });
+    }, "<search query or url>"),
     new Command_1.Command("email", function (message, args) {
         let recipient = "";
         if (args[0]) {
