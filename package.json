@@ -12,11 +12,14 @@
   ],
   "author": "Ian Kraybill",
   "dependencies": {
+    "@types/node": "^10.12.9",
     "discord.js": "^11.2.1",
+    "ffmpeg-binaries": "^4.0.0",
+    "nodemailer": "^4.6.8",
     "perf_hooks": "0.0.1",
     "performance": "^1.1.1",
     "typescript": "^3.1.6",
-    "@types/node": "^10.12.9",
-    "nodemailer": "^4.6.8"
+    "ytdl-core": "^0.28.0",
+    "node-opus": "^0.3.1"
   }
 }
