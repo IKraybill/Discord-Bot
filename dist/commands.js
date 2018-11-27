@@ -11,6 +11,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const CommandSet_1 = require("./CommandSet");
 const utility = require("./utility");
 const Command_1 = require("./Command");
+const fs = require('fs');
 const config = require('../config.json');
 const jokes = require('../data/jokes.json');
 const quotes = require('../data/quotes.json');
@@ -99,12 +100,31 @@ let commands = [
             }
             //console.log(connection);
             if (args[0]) {
-                dispatcher = connection.playStream(ytdl(args[0], { filter: 'audioonly' }));
-                console.log("playing stream");
+                if (args[0].startsWith("https://")) {
+                    dispatcher = connection.playStream(ytdl(args[0], { filter: 'audioonly' }));
+                    console.log("playing stream");
+                }
+                else if (args[0].toLowerCase() === "vocaloid") {
+                    let path = "res/music/vocaloid";
+                    let songFile;
+                    fs.readdir(path, function (err, items) {
+                        let fileIndex = Math.floor(Math.random() * items.length);
+                        songFile = items[fileIndex];
+                    });
+                    function waitForSong() {
+                        if (songFile) {
+                            let songPath = path + "/" + songFile;
+                            message.channel.send("Now playing: " + songFile);
+                            dispatcher = connection.playFile(songPath);
+                        }
+                        else {
+                            setTimeout(waitForSong, 1000);
+                        }
+                    }
+                    setTimeout(waitForSong, 1000);
+                }
             }
-            else
-                dispatcher = connection.playFile("res/music/Ievan_polkka.mp3");
-            dispatcher.on('finish', () => {
+            yield dispatcher.on('finish', () => {
                 console.log('Finished playing!');
             });
         });
