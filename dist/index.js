@@ -33,8 +33,7 @@ bot.on("message", (message) => __awaiter(this, void 0, void 0, function* () {
     //         message.reply('You need to join a voice channel first!');
     //     }
     // }
-    if (message.author.bot || message.system)
-        return; // Ignore bots
+    //if(message.author.bot || message.system) return; // Ignore bots
     if (message.channel.type === 'dm') { // Direct Message
         return; //Optionally handle direct messages
     }

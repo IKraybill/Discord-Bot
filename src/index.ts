@@ -30,7 +30,7 @@ bot.on("message", async message => {
     //     }
     // }
 
-    if(message.author.bot || message.system) return; // Ignore bots
+    //if(message.author.bot || message.system) return; // Ignore bots
 
     if(message.channel.type === 'dm') { // Direct Message
         return; //Optionally handle direct messages
