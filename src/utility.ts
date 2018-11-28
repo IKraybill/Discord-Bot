@@ -1,5 +1,5 @@
 import * as util from "util";
-import {Command} from "./Command";
+import * as fs from "fs";
 
 const config = require("../config");
 
@@ -15,6 +15,20 @@ function evalCmd(message, code) {
     }
 }
 
+function getSongFromDir(path){
+    let songFile;
+
+    return new Promise(function (resolve) {
+        fs.readdir(path, function (err, items) {
+            let fileIndex = Math.floor(Math.random() * items.length);
+
+            songFile = items[fileIndex];
+
+            resolve(songFile);
+        });
+    })
+}
+
 function clean(text) {
     if (typeof(text) !== 'string') {
         text = util.inspect(text, {depth: 0});
@@ -24,33 +38,6 @@ function clean(text) {
         .replace(/@/g, '@' + String.fromCharCode(8203))
         .replace(config.token, 'mfa.VkO_2G4Qv3T--NO--lWetW_tjND--TOKEN--QFTm6YGtzq9PH--4U--tG0'); //Don't let it post your token
     return text;
-}
-
-/**
- * @deprecated
- * @param jokeObj
- */
-function jokeObjToCommandArr(jokeObj) {
-    let jokeCommands = [];
-
-    for (let joke in jokeObj){
-        if (jokeObj.hasOwnProperty(joke)) {
-            jokeCommands.push(new Command(joke, function(message) {
-                let first = jokeObj[joke][0];
-                let punchline = jokeObj[joke][1];
-
-                message.channel.send(first);
-                setTimeout(() => {message.channel.send(punchline);}, 2000);
-            }));
-        }
-    }
-
-    jokeCommands.push(new Command("help", function (message, args, parent) {
-            message.channel.send(parent.helpText);
-        })
-    );
-
-    return jokeCommands;
 }
 
 /**
@@ -70,16 +57,4 @@ function objToObjArray(obj){
     return array;
 }
 
-/**
- * @deprecated
- * @param funcArr
- */
-function funcArrToFuncObj(funcArr){
-    let object = {};
-    for (let i = 0; i < funcArr.length; i++){
-        object = eval("Object.assign({"+funcArr[i].name+": funcArr[i].task}, object)");
-    }
-    return object;
-}
-
-export {evalCmd, clean, jokeObjToCommandArr, objToObjArray}
+export {evalCmd, clean, objToObjArray, getSongFromDir}

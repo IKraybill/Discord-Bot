@@ -11,7 +11,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const CommandSet_1 = require("./CommandSet");
 const utility = require("./utility");
 const Command_1 = require("./Command");
-const fs = require('fs');
+const utility_1 = require("./utility");
 const config = require('../config.json');
 const jokes = require('../data/jokes.json');
 const quotes = require('../data/quotes.json');
@@ -88,7 +88,7 @@ let commands = [
             message.channel.send("You didn't get bitcoin! loser");
         }
     }),
-    new Command_1.Command("music", function (message, args, parent) {
+    new Command_1.Command("music", function (message, args) {
         return __awaiter(this, void 0, void 0, function* () {
             let connection;
             let dispatcher;
@@ -106,27 +106,16 @@ let commands = [
                 }
                 else if (args[0].toLowerCase() === "vocaloid") {
                     let path = "res/music/vocaloid";
-                    let songFile;
-                    fs.readdir(path, function (err, items) {
-                        let fileIndex = Math.floor(Math.random() * items.length);
-                        songFile = items[fileIndex];
-                    });
-                    function waitForSong() {
-                        if (songFile) {
-                            let songPath = path + "/" + songFile;
-                            message.channel.send("Now playing: " + songFile);
-                            dispatcher = connection.playFile(songPath);
-                        }
-                        else {
-                            setTimeout(waitForSong, 1000);
-                        }
-                    }
-                    setTimeout(waitForSong, 1000);
+                    let songFile = yield utility_1.getSongFromDir(path);
+                    console.log(songFile);
+                    let songPath = path + "/" + songFile;
+                    message.channel.send("Now playing: " + songFile);
+                    dispatcher = connection.playFile(songPath);
                 }
+                dispatcher.on('finish', () => {
+                    console.log('Finished playing!');
+                });
             }
-            yield dispatcher.on('finish', () => {
-                console.log('Finished playing!');
-            });
         });
     }, "<search query or url>"),
     new Command_1.Command("email", function (message, args) {

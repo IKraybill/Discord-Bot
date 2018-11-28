@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const util = require("util");
-const Command_1 = require("./Command");
+const fs = require("fs");
 const config = require("../config");
 function evalCmd(message, code) {
     if (message.author.id !== config.owner)
@@ -17,6 +17,17 @@ function evalCmd(message, code) {
     }
 }
 exports.evalCmd = evalCmd;
+function getSongFromDir(path) {
+    let songFile;
+    return new Promise(function (resolve) {
+        fs.readdir(path, function (err, items) {
+            let fileIndex = Math.floor(Math.random() * items.length);
+            songFile = items[fileIndex];
+            resolve(songFile);
+        });
+    });
+}
+exports.getSongFromDir = getSongFromDir;
 function clean(text) {
     if (typeof (text) !== 'string') {
         text = util.inspect(text, { depth: 0 });
@@ -28,28 +39,6 @@ function clean(text) {
     return text;
 }
 exports.clean = clean;
-/**
- * @deprecated
- * @param jokeObj
- */
-function jokeObjToCommandArr(jokeObj) {
-    let jokeCommands = [];
-    for (let joke in jokeObj) {
-        if (jokeObj.hasOwnProperty(joke)) {
-            jokeCommands.push(new Command_1.Command(joke, function (message) {
-                let first = jokeObj[joke][0];
-                let punchline = jokeObj[joke][1];
-                message.channel.send(first);
-                setTimeout(() => { message.channel.send(punchline); }, 2000);
-            }));
-        }
-    }
-    jokeCommands.push(new Command_1.Command("help", function (message, args, parent) {
-        message.channel.send(parent.helpText);
-    }));
-    return jokeCommands;
-}
-exports.jokeObjToCommandArr = jokeObjToCommandArr;
 /**
  * Converts object (usually JSON) to array of objects (useful for Array.map)
  * @param obj: object to be converted
@@ -65,15 +54,4 @@ function objToObjArray(obj) {
     return array;
 }
 exports.objToObjArray = objToObjArray;
-/**
- * @deprecated
- * @param funcArr
- */
-function funcArrToFuncObj(funcArr) {
-    let object = {};
-    for (let i = 0; i < funcArr.length; i++) {
-        object = eval("Object.assign({" + funcArr[i].name + ": funcArr[i].task}, object)");
-    }
-    return object;
-}
 //# sourceMappingURL=utility.js.map

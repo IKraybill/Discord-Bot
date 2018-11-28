@@ -1,8 +1,7 @@
 import {CommandSet} from "./CommandSet";
 import * as utility from "./utility";
 import {Command} from "./Command";
-import * as path from "path";
-const fs = require('fs');
+import {getSongFromDir} from "./utility";
 const config = require('../config.json');
 const jokes = require('../data/jokes.json');
 const quotes = require('../data/quotes.json');
@@ -95,7 +94,7 @@ let commands = [
         }
     }),
 
-    new Command("music", async function (message, args, parent) {
+    new Command("music", async function (message, args) {
         let connection;
         let dispatcher;
         if (message.member.voiceChannel){
@@ -110,30 +109,21 @@ let commands = [
                 console.log("playing stream");
             } else if (args[0].toLowerCase() === "vocaloid") {
                 let path = "res/music/vocaloid";
-                let songFile;
-                fs.readdir(path, function (err, items) {
-                    let fileIndex = Math.floor(Math.random() * items.length);
 
-                    songFile =  items[fileIndex];
-                });
-                function waitForSong(){
-                    if (songFile){
-                        let songPath = path + "/" + songFile;
-                        message.channel.send("Now playing: " + songFile);
+                let songFile = await getSongFromDir(path);
+                console.log(songFile);
+                let songPath = path + "/" + songFile;
+                message.channel.send("Now playing: " + songFile);
 
-                        dispatcher = connection.playFile(songPath);
-                    } else {
-                        setTimeout(waitForSong, 1000);
-                    }
-                }
-
-                setTimeout(waitForSong, 1000);
+                dispatcher = connection.playFile(songPath);
 
             }
+
+            dispatcher.on('finish', () => {
+                console.log('Finished playing!');
+            });
         }
-        await dispatcher.on('finish', () => {
-            console.log('Finished playing!');
-        });
+
 
     }, "<search query or url>"),
 
