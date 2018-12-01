@@ -2,8 +2,12 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel>
+      <module name="com.ikraybill.DiscordBotKt.main" target="1.8" />
+      <module name="com.ikraybill.DiscordBotKt.test" target="1.8" />
       <module name="org.example.Discord-Bot.main" target="1.8" />
       <module name="org.example.Discord-Bot.test" target="1.8" />
+      <module name="org.example.DiscordBotKt.main" target="1.8" />
+      <module name="org.example.DiscordBotKt.test" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
