@@ -111,7 +111,7 @@ let commands = [
                 let path = "res/music/vocaloid";
 
                 let songFile = await getSongFromDir(path);
-                console.log(songFile);
+                //console.log(songFile);
                 let songPath = path + "/" + songFile;
                 message.channel.send("Now playing: " + songFile);
 
