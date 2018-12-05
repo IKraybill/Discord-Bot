@@ -25,14 +25,6 @@ bot.on("guildCreate", guild => {
     console.log(`I've joined the guild ${guild.name} (${guild.id}), owned by ${guild.owner.user.username} (${guild.owner.user.id}).`);
 });
 bot.on("message", (message) => __awaiter(this, void 0, void 0, function* () {
-    // if (message.content === '/join') {
-    //     // Only try to join the sender's voice channel if they are in one themselves
-    //     if (message.member.voiceChannel.) {
-    //         const connection = await message.member.voice.channel.join();
-    //     } else {
-    //         message.reply('You need to join a voice channel first!');
-    //     }
-    // }
     //if(message.author.bot || message.system) return; // Ignore bots
     if (message.channel.type === 'dm') { // Direct Message
         return; //Optionally handle direct messages
@@ -45,6 +37,9 @@ bot.on("message", (message) => __awaiter(this, void 0, void 0, function* () {
         return message.channel.send(`Use \`${config.prefix}\` to interact with me.`); //help people learn your prefix
     }
 }));
+bot.on('disconnected', () => {
+    bot.login(config.token);
+});
 // Catch Errors before they crash the app.
 process.on('uncaughtException', (err) => {
     const errorMsg = err.stack.replace(new RegExp(`${__dirname}/`, 'g'), './');

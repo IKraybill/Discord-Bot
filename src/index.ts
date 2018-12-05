@@ -21,15 +21,6 @@ bot.on("guildCreate", guild => {
 
 bot.on("message", async message => {
 
-    // if (message.content === '/join') {
-    //     // Only try to join the sender's voice channel if they are in one themselves
-    //     if (message.member.voiceChannel.) {
-    //         const connection = await message.member.voice.channel.join();
-    //     } else {
-    //         message.reply('You need to join a voice channel first!');
-    //     }
-    // }
-
     //if(message.author.bot || message.system) return; // Ignore bots
 
     if(message.channel.type === 'dm') { // Direct Message
@@ -46,6 +37,10 @@ bot.on("message", async message => {
 
         return message.channel.send(`Use \`${config.prefix}\` to interact with me.`); //help people learn your prefix
     }
+});
+
+bot.on('disconnected', () => {
+    bot.login(config.token)
 });
 
 // Catch Errors before they crash the app.
