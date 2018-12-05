@@ -18,25 +18,25 @@ const transporter = nodemailer.createTransport({
 });
 
 let commands = [
-    new Command("hello", function(message) {
+    new Command("hello", message => {
         message.channel.send(`Hello, ${message.author.toString()}`);
     }),
 
-    new Command("eval", function (message, args) {
+    new Command("eval", (message, args) => {
         if (message.author.id === config.owner){
             const code = args.join(" ");
             return utility.evalCmd(message, code);
         }
     }),
 
-    new Command("cute", function (message) {
+    new Command("cute", (message) => {
         message.channel.send("Very cute!");
         message.channel.send("Just like Miku");
     }),
 
     new CommandSet("joke", config.prefix, "Possible jokes",
         utility.objToObjArray(jokes).map(object =>
-            new Command(object.key, function (message) {
+            new Command(object.key, message => {
                 let first = object.value[0];
                 let punchline = object.value[1];
 
@@ -48,7 +48,7 @@ let commands = [
 
     new CommandSet("quote", config.prefix, "Possible quote authors",
         utility.objToObjArray(quotes).map(object =>
-            new Command(object.key, async function (message, args) {
+            new Command(object.key, async (message, args) => {
                 let index = Math.floor(Math.random() * object.value.length);
                 if (!isNaN(parseInt(args[0]))){
                     index = parseInt(args[0]) - 1;
@@ -66,26 +66,26 @@ let commands = [
         )
     ),
 
-    new Command("strong", function (message) {
+    new Command("strong", message => {
         message.channel.send("What's 1000 minus 7?");
         message.channel.send({files: ["https://thumbs.gfycat.com/AromaticZigzagHamadryad-size_restricted.gif"]});
     }),
 
-    new Command("daniel", function (message) {
+    new Command("daniel", (message) => {
         let danielVals = Object.keys(daniel).map(key => daniel[key]);
         let random = Math.floor(Math.random() * danielVals.length);
         message.channel.send({files: [danielVals[random]]});
     }),
 
-    new Command("stop", function (message) {
+    new Command("stop", (message) => {
         message.channel.send("Never.");
     }),
 
-    new Command("kill", function (message) {
+    new Command("kill", (message) => {
         message.channel.send("OK. I will destroy all humans");
     }),
 
-    new Command("bitcoin", function (message) {
+    new Command("bitcoin", (message) => {
         let random = Math.floor(Math.random() * 4);
         if (random === 1 && message.author.id === config.owner){
             message.channel.send("You got bitcoin!");
@@ -94,7 +94,7 @@ let commands = [
         }
     }),
 
-    new Command("music", async function (message, args) {
+    new Command("music", async (message, args) => {
         let connection;
         let dispatcher;
         if (message.member.voiceChannel){
@@ -127,7 +127,7 @@ let commands = [
 
     }, "<search query or url>"),
 
-    new Command("email", function (message, args) {
+    new Command("email", (message, args) => {
         let recipient = "";
         if (args[0]) {
             recipient = args[0];
@@ -149,7 +149,7 @@ let commands = [
             to: recipient,
             subject: "Beep boop! incoming mail from Discord",
             text: msg
-        }, function (error, info) {
+        }, (error, info) => {
             if (error) {
                 console.log(error);
                 message.channel.send("Error: email not sent. Did you input a valid email address?");
@@ -160,7 +160,7 @@ let commands = [
         })
     }, "<address> <message>"),
 
-    new Command("eightball", function (message) {
+    new Command("eightball", message => {
         let random = Math.floor(Math.random() * 20);
         message.channel.send(eightball[random + 1]);
     })
