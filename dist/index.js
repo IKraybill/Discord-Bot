@@ -40,6 +40,10 @@ bot.on("message", (message) => __awaiter(this, void 0, void 0, function* () {
 bot.on('disconnected', () => {
     bot.login(config.token);
 });
+bot.on('error', (message) => {
+    console.error(message);
+    bot.login(config.token);
+});
 // Catch Errors before they crash the app.
 process.on('uncaughtException', (err) => {
     const errorMsg = err.stack.replace(new RegExp(`${__dirname}/`, 'g'), './');

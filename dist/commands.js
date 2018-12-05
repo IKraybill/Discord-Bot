@@ -29,7 +29,6 @@ const transporter = nodemailer.createTransport({
 let commands = [
     new Command_1.Command("hello", message => {
         message.channel.send(`Hello, ${message.author.toString()}`);
-        console.log(this);
     }),
     new Command_1.Command("eval", (message, args) => {
         if (message.author.id === config.owner) {
