@@ -40,13 +40,11 @@ bot.on("message", async message => {
 });
 
 bot.on('disconnected', () => {
+    console.log("disconnected, logging in again");
     bot.login(config.token)
 });
 
-bot.on('error', (message) => {
-    console.error(message);
-    bot.login(config.token);
-});
+//bot.on('error', console.error);
 
 // Catch Errors before they crash the app.
 process.on('uncaughtException', (err) => {
