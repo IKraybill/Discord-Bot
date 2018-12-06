@@ -12,9 +12,11 @@ export class Command implements ICommand{
      * command set
      * @param argHelp
      */
-    constructor(name, task, argHelp = null) {
+    constructor(name, task = null, argHelp = null) {
         this.name = name;
-        this.task = task;
+        if (task != null){
+            this.task = task;
+        }
         this.argHelp = argHelp;
     }
 
