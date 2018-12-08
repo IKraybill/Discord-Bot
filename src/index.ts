@@ -51,6 +51,7 @@ process.on('uncaughtException', (err) => {
     const errorMsg = err.stack.replace(new RegExp(`${__dirname}/`, 'g'), './');
     console.error('Uncaught Exception: ', errorMsg);
     // process.exit(1); //Eh, should be fine, but maybe handle this?
+    bot.login(config.token)
 });
 
 process.on('unhandledRejection', err => {
