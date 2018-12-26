@@ -27,7 +27,7 @@ bot.on("message", async message => {
         return; //Optionally handle direct messages
     }
 
-    console.log(message.content); // Log chat to console for debugging/testing
+    //console.log(message.content); // Log chat to console for debugging/testing
 
     if (message.content.indexOf(config.prefix) === 0) {
 
@@ -43,20 +43,20 @@ bot.on("message", async message => {
 //     console.log("disconnected, logging in again");
 //     bot.login(config.token)
 // });
-//
-// //bot.on('error', console.error);
-//
-// // Catch Errors before they crash the app.
-// process.on('uncaughtException', (err) => {
-//     const errorMsg = err.stack.replace(new RegExp(`${__dirname}/`, 'g'), './');
-//     console.error('Uncaught Exception: ', errorMsg);
-//     // process.exit(1); //Eh, should be fine, but maybe handle this?
-//     bot.login(config.token)
-// });
-//
-// process.on('unhandledRejection', err => {
-//     console.error('Uncaught Promise Error: ', err);
-//     // process.exit(1); //Eh, should be fine, but maybe handle this?
-// });
+
+//bot.on('error', console.error);
+
+// Catch Errors before they crash the app.
+process.on('uncaughtException', (err) => {
+    const errorMsg = err.stack.replace(new RegExp(`${__dirname}/`, 'g'), './');
+    console.error('Uncaught Exception: ', errorMsg);
+    // process.exit(1); //Eh, should be fine, but maybe handle this?
+    //bot.login(config.token)
+});
+
+process.on('unhandledRejection', err => {
+    console.error('Uncaught Promise Error: ', err);
+    // process.exit(1); //Eh, should be fine, but maybe handle this?
+});
 
 bot.login(config.token);
